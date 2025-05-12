@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layout Responsivo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #3cc8e3;
+      padding: 20px;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+    }
+
+    .conteudo {
+      background: #e35ca5;
+      flex: 3;
+      padding: 20px;
+      font-style: italic;
+    }
+
+    .sidebar {
+      background: #e3d17a;
+      flex: 1;
+      padding: 20px;
+      font-style: italic;
+    }
+
+    .footer {
+      display: flex;
+      background: #5ce35c;
+      flex-wrap: wrap;
+    }
+
+    .footer > div {
+      flex: 1;
+      padding: 20px;
+      border: 1px solid white;
+      text-align: center;
+      font-style: italic;
+    }
+
+    @media (max-width: 992px) {
+      .main {
+        flex-direction: column;
+      }
+
+      .conteudo {
+        width: 100%;
+      }
+
+      .sidebar {
+        width: 100%;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer > div:nth-child(2) {
+        order: 1;
+        width: 100%;
+      }
+
+      .footer > div:nth-child(1),
+      .footer > div:nth-child(3) {
+        order: 2;
+        width: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Header</header>
+  <div class="main">
+    <div class="conteudo">conteudo</div>
+    <div class="sidebar">sidebar</div>
+  </div>
+  <div class="footer">
+    <div>parte 1</div>
+    <div>parte 2</div>
+    <div>parte 3</div>
+  </div>
+</body>
+</html>

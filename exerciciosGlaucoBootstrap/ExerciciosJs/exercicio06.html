@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Inversor de Palavras</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Inversor de Palavras</h1>
+  <input type="text" id="palavra" placeholder="Digite uma palavra" />
+  <button onclick="inverter()">Inverter</button>
+  <div id="resultado"></div>
+
+  <script>
+    function inverter() {
+
+      const palavra = document.getElementById("palavra").value;
+      
+
+      const palavraInvertida = palavra.split('').reverse().join('');
+      
+      document.getElementById("resultado").textContent = 
+        `Palavra original: ${palavra} | Invertida: ${palavraInvertida}`;
+    }
+  </script>
+
+</body>
+</html>

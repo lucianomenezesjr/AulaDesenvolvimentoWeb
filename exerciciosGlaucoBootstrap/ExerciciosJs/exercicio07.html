@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Encontrar Maior Número</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    #numeros {
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Encontrar o Maior Número</h1>
+  <div>
+    <input type="number" id="numero" placeholder="Digite um número" />
+    <button onclick="verificar()">Adicionar</button>
+  </div>
+  
+  <div id="numeros"></div>
+  
+  <button onclick="encontrarMaior()">Encontrar Maior</button>
+  <div id="resultado"></div>
+
+  <script>
+    let listaNumeros = [];
+    var resultado = document.getElementById("resultado");
+
+    function verificar() {
+      const num = parseInt(document.getElementById("numero").value);
+      
+      var listaStr = "";
+
+      if (isNaN(num)) {
+        resultado.textContent = "Por favor, digite um número válido.";
+        return;
+      }
+
+      listaNumeros.push(num);
+      for( i=0; i<listaNumeros.length; i++){
+
+        listaStr += listaNumeros[i] + ", "
+      }
+      resultado.innerHTML = `Números inseridos<br>${listaStr}`;
+
+    }
+
+    function encontrarMaior(){
+
+        var maiorNum = 0;
+
+        if (listaNumeros.length >= 2){
+
+            for(var i=1; i<listaNumeros.length; i++){
+                if(listaNumeros[i] > maiorNum){
+                    maiorNum = listaNumeros[i];
+                }
+            }
+        }
+        console.log(`O maior número é ${maiorNum}`)
+        resultado.textContent = `O maior número é ${maiorNum}`
+    }
+    
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificador de aprovação</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Verificar se o Aluno foi aprovado</h1>
+  <label for="">Primeira nota</label>
+  <input type="number" id="nota1" placeholder="Digite a primeira nota" />
+  <label for="">Segunda nota</label>
+  <input type="number" id="nota2" placeholder="Digite a segunda nota" />
+  <label for="">Terceira nota</label>
+  <input type="number" id="nota3" placeholder="Digite a terceira nota" />
+  <button onclick="verificar()">Verificar</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function verificar() {
+      const nota01 = parseFloat(document.getElementById("nota1").value);
+      const nota02 = parseFloat(document.getElementById("nota2").value);
+      const nota03 = parseFloat(document.getElementById("nota3").value);
+      const resultado = document.getElementById("resultado");
+      
+
+      if (isNaN(nota01) || isNaN(nota02) || isNaN(nota03)) {
+        resultado.textContent = "Por favor, digite números válidos em todos os campos.";
+        return;
+      }
+    
+      const media = (nota01 + nota02 + nota03)/3
+
+      if (media >= 6) {
+        resultado.textContent = `O aluno foi aprovado com ${media} de média.`;
+      } else {
+        resultado.textContent = `O aluno foi reprovado com ${media.toFixed(2)} de média.`;
+      }
+    }
+  </script>
+
+</body>
+</html>
+

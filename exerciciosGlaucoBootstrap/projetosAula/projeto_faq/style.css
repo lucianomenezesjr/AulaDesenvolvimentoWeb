@@ -1,0 +1,19 @@
+body {
+    background: rgb(49, 21, 53);
+}
+
+.line-container {
+    position: relative;
+    padding: 20px 0;
+}
+
+.line-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #ccc;
+    transform: translateY(-50%);
+}

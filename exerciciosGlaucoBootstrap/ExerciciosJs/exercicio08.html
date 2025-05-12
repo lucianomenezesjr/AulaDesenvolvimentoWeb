@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificador de Número Primo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Verificador de Número Primo</h1>
+  <div>
+    <input type="number" id="numero" placeholder="Digite um número" />
+    <button onclick="verificarPrimo()">Verificar</button>
+  </div>
+  <div id="resultado"></div>
+
+  <script>
+    function verificarPrimo() {
+      const num = parseInt(document.getElementById("numero").value);
+      const resultadoHTML = document.getElementById("resultado");
+      
+      if (isNaN(num) || num < 2) {
+        resultadoHTML.textContent = "Número inválido. Digite um inteiro ≥ 2.";
+        return;
+      }
+
+      if (num === 2) {
+        resultadoHTML.textContent = "2 é primo.";
+        return;
+      }
+
+      else if (num % 2 === 0) {
+        resultadoHTML.textContent = `${num} não é primo.`;
+        return;
+      }
+
+      const limite = Math.sqrt(num);
+      for (let i = 3; i <= limite; i += 2) {
+        if (num % i === 0) {
+          resultadoHTML.textContent = `${num} não é primo.`;
+          return;
+        }
+      }
+
+      // Se passou por tudo, é primo
+      resultadoHTML.textContent = `${num} é primo.`;
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Contador</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Exercício 05</h1>
+  <input type="number" id="numero" placeholder="Digite um número" />
+  <button onclick="verificar()">Verificar</button>
+  <div id="resultado"></div>
+
+  <script>
+    var resultadoSoma = 0;
+    function verificar() {
+      const resultado = document.getElementById("resultado");
+      var num = parseFloat(document.getElementById("numero").value);
+      
+      
+      if (num === 0) {
+        resultado.textContent = `A soma dos valores inseridos é ${resultadoSoma}`;
+      } else {
+        resultadoSoma += num;
+        resultado.textContent = `Valor somado: ${resultadoSoma}. Digite outro número ou 0 para finalizar.`;
+      }
+    }
+  </script>
+
+</body>
+</html>
