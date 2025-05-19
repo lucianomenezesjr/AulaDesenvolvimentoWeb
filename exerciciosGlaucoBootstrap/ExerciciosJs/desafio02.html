@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador de Senha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0069d9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .strong {
+            background: #d4edda;
+            color: #155724;
+        }
+        .medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .weak {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li.met {
+            color: green;
+        }
+        li.unmet {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Verificador de Senha</h1>
+    <form id="passwordForm">
+        <input type="password" id="passwordInput" placeholder="Digite sua senha">
+        <button type="submit">Verificar</button>
+    </form>
+    <div id="result"></div>
+    <ul id="criteriaList"></ul>
+
+    <script>
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('passwordInput').value;
+            const resultDiv = document.getElementById('result');
+            const criteriaList = document.getElementById('criteriaList');
+            
+            criteriaList.innerHTML = '';
+            
+            const criteria = [
+                { name: '8+ caracteres', met: password.length >= 8 },
+                { name: 'Letra maiúscula', met: /[A-Z]/.test(password) },
+                { name: 'Letra minúscula', met: /[a-z]/.test(password) },
+                { name: 'Número', met: /[0-9]/.test(password) },
+                { name: 'Caractere especial', met: /[!@#$%^&*()]/.test(password) }
+            ];
+            
+            criteria.forEach(c => {
+                const li = document.createElement('li');
+                li.textContent = c.name;
+                li.className = c.met ? 'met' : 'unmet';
+                criteriaList.appendChild(li);
+            });
+            
+            const metCount = criteria.filter(c => c.met).length;
+            
+            if (metCount === 5) {
+                resultDiv.className = 'strong';
+                resultDiv.textContent = 'Senha forte!';
+            } else if (metCount >= 3) {
+                resultDiv.className = 'medium';
+                resultDiv.textContent = 'Senha média';
+            } else {
+                resultDiv.className = 'weak';
+                resultDiv.textContent = 'Senha fraca';
+            }
+        });
+    </script>
+</body>
+</html>

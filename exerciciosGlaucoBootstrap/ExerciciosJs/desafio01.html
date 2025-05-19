@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador de Palíndromos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            display: block;
+        }
+        
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            display: block;
+        }
+        
+        .input-error {
+            color: #a94442;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verificador de Palíndromos</h1>
+        <form id="palindromeForm">
+            <div class="form-group">
+                <label for="numberInput">Digite um número:</label>
+                <input type="text" id="numberInput" placeholder="Ex: 121, 1331">
+                <div id="inputError" class="input-error">Por favor, digite um número inteiro positivo válido.</div>
+            </div>
+            <button type="submit">Verificar</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('palindromeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const input = document.getElementById('numberInput').value.trim();
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('inputError');
+            
+            // Reset styles and messages
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            
+            // Validate input
+            if (!input) {
+                errorDiv.textContent = 'Por favor, digite um número.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Check if input is a positive integer
+            const number = parseInt(input);
+            if (isNaN(number) || number < 0 || !/^\d+$/.test(input)) {
+                errorDiv.textContent = 'Por favor, digite um número inteiro positivo válido.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Check if it's a palindrome
+            const isPalindrome = checkPalindrome(input);
+            
+            // Display result
+            resultDiv.textContent = isPalindrome 
+                ? `"${input}" é um palíndromo!` 
+                : `"${input}" não é um palíndromo.`;
+                
+            resultDiv.className = isPalindrome ? 'result success' : 'result error';
+        });
+        
+        function checkPalindrome(str) {
+            const len = str.length;
+            for (let i = 0; i < len / 2; i++) {
+                if (str[i] !== str[len - 1 - i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
