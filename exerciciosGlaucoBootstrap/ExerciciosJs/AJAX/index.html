@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .margem-tabela {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pokemon-sprite {
+            width: 72px;
+            height: 72px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Pokédex</h1>
+        
+        <div id="loading" class="loading">Carregando Pokémon...</div>
+        
+        <div class="table-responsive margem-tabela" id="tableContainer" style="display: none;">
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>🆔 ID</th>
+                        <th>🧬 Nome</th>
+                        <th>🖼️ Sprite</th>
+                        <th>📏 Altura (m)</th>
+                        <th>⚖️ Peso (kg)</th>
+                        <th>🎭 Espécie</th>
+                    </tr>
+                </thead>
+                <tbody id="pokemonTable">
+                    <!-- Tabela será preenchida via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <nav aria-label="Page navigation" id="paginationContainer" style="display: none;">
+            <ul class="pagination" id="pagination">
+                <!-- Paginação será preenchida via JavaScript -->
+            </ul>
+        </nav>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        const totalPokemons = 168;
+        const pokemonsPerPage = 10;
+        let allPokemons = [];
+        let currentPage = 1;
+
+        // Carrega todos os Pokémon
+        async function loadAllPokemons() {
+            try {
+                const requests = [];
+                
+                for (let id = 1; id <= totalPokemons; id++) {
+                    requests.push(
+                        $.getJSON(`https://pokeapi.co/api/v2/pokemon/${id}`)
+                            .then(pokemon => ({
+                                id: pokemon.id,
+                                name: pokemon.name,
+                                sprite: pokemon.sprites.front_default,
+                                height: (pokemon.height / 10).toFixed(1),
+                                weight: (pokemon.weight / 10).toFixed(1),
+                                species: pokemon.species.name
+                            }))
+                            .catch(() => retryLoadPokemon(id))
+                    );
+                }
+                
+                allPokemons = await Promise.all(requests);
+                initializePokedex();
+            } catch (error) {
+                console.error("Erro ao carregar Pokémon:", error);
+            }
+        }
+
+        // Inicializa a Pokédex
+        function initializePokedex() {
+            $('#loading').hide();
+            $('#tableContainer').show();
+            $('#paginationContainer').show();
+            
+            createPagination();
+            showPage(1);
+        }
+
+        // Mostra uma página específica
+        function showPage(page) {
+            currentPage = page;
+            const startIndex = (page - 1) * pokemonsPerPage;
+            const endIndex = Math.min(startIndex + pokemonsPerPage, allPokemons.length);
+            
+            $('#pokemonTable').empty();
+            
+            allPokemons.slice(startIndex, endIndex).forEach(pokemon => {
+                if (pokemon) {
+                    $('#pokemonTable').append(`
+                        <tr>
+                            <td>${pokemon.id}</td>
+                            <td>${pokemon.name}</td>
+                            <td><img src="${pokemon.sprite}" alt="${pokemon.name}" class="pokemon-sprite"></td>
+                            <td>${pokemon.height}</td>
+                            <td>${pokemon.weight}</td>
+                            <td>${pokemon.species}</td>
+                        </tr>
+                    `);
+                }
+            });
+            
+            updatePaginationButtons();
+        }
+
+        
+
+        // Cria a paginação
+        function createPagination() {
+            const totalPages = Math.ceil(totalPokemons / pokemonsPerPage);
+            const pagination = $('#pagination');
+            
+            pagination.html(`
+                <li class="page-item" id="prevButton">
+                    <a class="page-link" href="#" aria-label="Previous">&laquo;</a>
+                </li>
+                ${Array.from({length: totalPages}, (_, i) => `
+                    <li class="page-item page-number ${i === 0 ? 'active' : ''}">
+                        <a class="page-link" href="#">${i + 1}</a>
+                    </li>
+                `).join('')}
+                <li class="page-item" id="nextButton">
+                    <a class="page-link" href="#" aria-label="Next">&raquo;</a>
+                </li>
+            `);
+            
+            // Event listeners
+            $('.page-number').click(e => {
+                e.preventDefault();
+                showPage(parseInt($(e.target).text()));
+            });
+            
+            $('#prevButton').click(e => {
+                e.preventDefault();
+                if (currentPage > 1) showPage(currentPage - 1);
+            });
+            
+            $('#nextButton').click(e => {
+                e.preventDefault();
+                if (currentPage < totalPages) showPage(currentPage + 1);
+            });
+        }
+        
+        // Atualiza os botões de paginação
+        function updatePaginationButtons() {
+            const totalPages = Math.ceil(totalPokemons / pokemonsPerPage);
+            
+            $('.page-number').removeClass('active')
+                .eq(currentPage - 1).addClass('active');
+            
+            $('#prevButton').toggleClass('disabled', currentPage === 1);
+            $('#nextButton').toggleClass('disabled', currentPage === totalPages);
+        }
+
+        // Inicia o carregamento
+        loadAllPokemons();
+    });
+    </script>
+</body>
+</html>
